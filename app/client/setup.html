@@ -1,0 +1,39 @@
+<template name="setup">
+	<h1>Bridges</h1>
+	<ul>
+		{{#each bridges}}
+		{{>setup_oneBridge}}
+		{{/each}}
+	</ul>
+
+	<h1>Lights</h1>
+	<ul>
+		{{#each lights}}
+			{{>setup_oneLight}}
+		{{/each}}
+	</ul>
+</template>
+
+<template name="setup_oneBridge">
+
+	<li>
+		id: {{_id}}<br />
+		name: {{name}}<br />
+		ip: {{internalipaddress}}<br />
+		mac: {{macaddress}}<br />
+		user: {{username}}
+		<button class="btn btn-connect">Connect</button>
+
+
+	</li>
+</template>
+
+<template name="setup_oneLight">
+
+	<li>
+		id: {{_id}}<br />
+		name: {{name}}<br />
+
+
+	</li>
+</template>
