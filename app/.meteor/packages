@@ -10,3 +10,8 @@ coffeescript
 http
 panter:publish-array
 iron:router
+fish:ffmpeg
+meteorhacks:npm
+
+
+npm-container

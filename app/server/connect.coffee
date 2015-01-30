@@ -35,7 +35,7 @@ Meteor.startup ->
 
 getAllConnectedBridges = -> Bridges.find(username: $exists: yes).fetch()
 
-Meteor.methods "updateLights", updateLights
+Meteor.methods "updateLights": updateLights
 
 Meteor.publish "lights", ->
 	for bridge in getAllConnectedBridges()
@@ -50,7 +50,7 @@ HueApi =
 
 	setLightState: (light) ->
 		bridge = Bridges.findOne light.bridgeId
-		console.log _hueCall light.bridgeId, "put", "#{bridge.username}/lights/#{light.idOnBridge}/state", data: light.state
+		_hueCall light.bridgeId, "put", "#{bridge.username}/lights/#{light.idOnBridge}/state", data: light.state
 
 	getLights: (bridgeId) ->
 		bridge = Bridges.findOne bridgeId
