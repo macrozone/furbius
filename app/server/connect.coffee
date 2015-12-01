@@ -24,12 +24,20 @@ Meteor.publish "bridges", ->
 	updateBridges()
 	Bridges.find()
 
-
+_isSettingLightState = no
 Meteor.startup ->
+	# normally observeChanges would be sufficient, but the autoform to update the lights
+	# will trigger the full document
 	Lights.find().observe 
-		changed: (light, oldLight) ->
-			unless _isUpdatingLightsFromBridge
-				HueApi.setLightState light
+		changed: (doc, oldDoc) ->
+			lightId = doc._id
+			changes = _.diff doc, oldDoc
+
+			unless _isUpdatingLightsFromBridge or _isSettingLightState
+				_isSettingLightState = yes
+				HueApi.setLightState lightId, changes.state
+				_isSettingLightState = no
+
 
 
 
@@ -46,12 +54,15 @@ Meteor.publish "lights", ->
 _hueCall = (bridgeId, method, path = "", options = {}) ->
 	{internalipaddress} = Bridges.findOne bridgeId
 	HTTP[method] "http://#{internalipaddress}/api/#{path}", options
-HueApi = 
+@HueApi = 
 
-	setLightState: (light) ->
+	setLightState: (lightID, state) ->
+		light = Lights.findOne lightID
 		bridge = Bridges.findOne light.bridgeId
-		_hueCall light.bridgeId, "put", "#{bridge.username}/lights/#{light.idOnBridge}/state", data: light.state
-
+		console.log "setting #{light.name}", state
+		
+		_hueCall light.bridgeId, "put", "#{bridge.username}/lights/#{light.idOnBridge}/state", data: state, 
+		
 	getLights: (bridgeId) ->
 		bridge = Bridges.findOne bridgeId
 		{data} = _hueCall bridgeId, "get", "#{bridge.username}/lights"

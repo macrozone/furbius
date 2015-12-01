@@ -1,4 +1,34 @@
 <template name="screen">
+{{>modes}}
+</template>
+
+
+<template name="modes">
+
+<div class="container">
 <h1>screen capturing</h1>
 
+{{#each modes}}
+	
+	{{>modes_oneMode}}
+
+{{/each}}
+
+{{>modes_newMode}}
+
+
+
+</div>
+</template>
+
+<template name="modes_oneMode">
+	<div class="col-xs-6">
+	{{name}}
+
+	{{>quickForm collection="Modes" id=_id doc=this type="update" autosave=true}}
+	</div>
+</template>
+
+<template name="modes_newMode">
+{{>quickForm collection="Modes" type="insert"}}
 </template>

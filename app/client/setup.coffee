@@ -1,10 +1,11 @@
 
 Router.route "setup",
 	waitOn: ->
-		[Meteor.subscribe("bridges"), Meteor.subscribe("config"), Meteor.subscribe("lights")]
+		[Meteor.subscribe("bridges"), Meteor.subscribe("modes"), Meteor.subscribe("lights")]
 	data: ->
 		bridges: -> Bridges.find()
 		lights: -> Lights.find()
+		modes: -> Modes.find()
 
 Template.setup_oneBridge.events
 	'click .btn-connect': (event, template) ->

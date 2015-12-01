@@ -1,0 +1,12 @@
+<template name="lights">
+{{#each lights}}
+	{{>lights_oneLight}}
+{{/each}}
+</template>
+
+<template name="lights_oneLight">
+<div class="col-xs-3">
+{{name}}
+{{>quickForm collection="Lights" id=_id doc=this type="update" autosave=true}}
+</div>
+</template>
